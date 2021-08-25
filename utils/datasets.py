@@ -394,6 +394,13 @@ class LoadImagesAndLabels(Dataset):  # for training/testing
                 else:
                     raise Exception(f'{prefix}{p} does not exist')
             self.img_files = sorted([x.replace('/', os.sep) for x in f if x.split('.')[-1].lower() in IMG_FORMATS])
+            # print(self.img_files)
+
+            '''for i in range(len(self.img_files)):
+                value = self.img_files[i]
+                self.img_files[i] = value.replace("\\", "/")'''
+
+            
             # self.img_files = sorted([x for x in f if x.suffix[1:].lower() in img_formats])  # pathlib
             assert self.img_files, f'{prefix}No images found'
         except Exception as e:
@@ -401,7 +408,14 @@ class LoadImagesAndLabels(Dataset):  # for training/testing
 
         # Check cache
         self.label_files = img2label_paths(self.img_files)  # labels
+
+        '''for i in range(len(self.label_files)):
+                value = self.label_files[i]
+                self.label_files[i] = value.replace("\\", "/")'''
+
+        # print(self.label_files)
         cache_path = (p if p.is_file() else Path(self.label_files[0]).parent).with_suffix('.cache')
+        #print(cache_path)
         try:
             cache, exists = np.load(cache_path, allow_pickle=True).item(), True  # load dict
             assert cache['version'] == 0.4 and cache['hash'] == get_hash(self.label_files + self.img_files)
@@ -423,7 +437,9 @@ class LoadImagesAndLabels(Dataset):  # for training/testing
         self.labels = list(labels)
         self.shapes = np.array(shapes, dtype=np.float64)
         self.img_files = list(cache.keys())  # update
+        #print(self.img_files)
         self.label_files = img2label_paths(cache.keys())  # update
+        #print(self.label_files)
         if single_cls:
             for x in self.labels:
                 x[:, 0] = 0
@@ -864,15 +880,19 @@ def verify_image_label(args):
     nm, nf, ne, nc = 0, 0, 0, 0  # number missing, found, empty, corrupt
     try:
         # verify images
+        #print(im_file)
         im = Image.open(im_file)
         im.verify()  # PIL verify
         shape = exif_size(im)  # image size
+        #print(shape)
         assert (shape[0] > 9) & (shape[1] > 9), f'image size {shape} <10 pixels'
         assert im.format.lower() in IMG_FORMATS, f'invalid image format {im.format}'
+        '''
         if im.format.lower() in ('jpg', 'jpeg'):
             with open(im_file, 'rb') as f:
                 f.seek(-2, 2)
-                assert f.read() == b'\xff\xd9', 'corrupted JPEG'
+                assert f.read() == b'\xff\xd9', 'corrupted JPEG
+        '''
 
         # verify labels
         segments = []  # instance segments
@@ -930,7 +950,7 @@ def dataset_stats(path='coco128.yaml', autodownload=False, verbose=False, profil
 
     def hub_ops(f, max_dim=1920):
         # HUB ops for 1 image 'f'
-        im = Image.open(f)
+        im = Image.open(f).convert("RGB")
         r = max_dim / max(im.height, im.width)  # ratio
         if r < 1.0:  # image too large
             im = im.resize((int(im.width * r), int(im.height * r)))
