@@ -28,16 +28,23 @@ from utils.torch_utils import select_device
 
 def export_torchscript(model, img, file, optimize):
     # TorchScript model export
-    prefix = colorstr('TorchScript:')
+    #prefix = colorstr('TorchScript:')
     try:
-        print(f'\n{prefix} starting export with torch {torch.__version__}...')
-        f = file.with_suffix('.torchscript.pt')
+        print("Starting export with torch")
+        #print(f'\n{prefix} starting export with torch {torch.__version__}...')
+        #f = file.with_suffix('.torchscript.pt')
         ts = torch.jit.trace(model, img, strict=False)
-        (optimize_for_mobile(ts) if optimize else ts).save(f)
-        print(f'{prefix} export success, saved as {f} ({file_size(f):.1f} MB)')
+        if optimize :
+            print("optimize")
+            ts = optimize_for_mobile(ts)
+            ts._save_for_lite_interpreter("./mobile_model/yolov5s_v1.ptl")
+            print("saved")
+        else: 
+            ts.save(f)
+        #print(f'{prefix} export success, saved as {f} ({file_size(f):.1f} MB)')
         return ts
     except Exception as e:
-        print(f'{prefix} export failure: {e}')
+        print('export failure: {e}')
 
 
 def export_onnx(model, img, file, opset, train, dynamic, simplify):
