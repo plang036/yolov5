@@ -60,6 +60,10 @@ $ python detect.py --source 0  # webcam
                             path/*.jpg  # glob
                             'https://youtu.be/NUsoVlDFqZg'  # YouTube
                             'rtsp://example.com/media.mp4'  # RTSP, RTMP, HTTP stream
+  
+python ./yolov5/detect.py --source ./datasets/images/IMG_20210701_141111.jpg --weights ./trained_model/yolov5s6_v1.pt --img 1280
+
+python ./yolov5/detect.py --source ./datasets/images/IMG_20210701_141111.jpg --weights ./trained_model/yolov5s_v1.pt --img 640
 ```
 
 </details>
@@ -74,6 +78,7 @@ largest `--batch-size` your GPU allows (batch sizes shown for 16 GB devices).
   
 ```
 dossier_projet/
+  -trained_model/
   -datasets/
         images/
         labels/
