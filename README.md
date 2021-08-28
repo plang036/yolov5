@@ -20,7 +20,7 @@ $ pip install -r requirements.txt
 
 </details>
 
-<details>
+<details open>
 <summary>Inference with detect.py</summary>
 
 `detect.py` runs inference on a variety of sources, downloading models automatically from
