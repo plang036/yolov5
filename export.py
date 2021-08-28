@@ -26,21 +26,23 @@ from utils.general import colorstr, check_img_size, check_requirements, file_siz
 from utils.torch_utils import select_device
 
 
-def export_torchscript(model, img, file, optimize):
+def export_torchscript(model, img, output, optimize):
     # TorchScript model export
     #prefix = colorstr('TorchScript:')
+    print(output)
     try:
         print("Starting export with torch")
         #print(f'\n{prefix} starting export with torch {torch.__version__}...')
         #f = file.with_suffix('.torchscript.pt')
         ts = torch.jit.trace(model, img, strict=False)
         if optimize :
-            print("optimize")
+            print("Optimize")
             ts = optimize_for_mobile(ts)
-            ts._save_for_lite_interpreter("./mobile_model/yolov5s_v1.ptl")
-            print("saved")
+            #ts._save_for_lite_interpreter("./mobile_model/yolov5s_v1.ptl")
+            ts._save_for_lite_interpreter(output)
+            print("Saved with lite interpreter")
         else: 
-            ts.save(f)
+            ts.save(output)
         #print(f'{prefix} export success, saved as {f} ({file_size(f):.1f} MB)')
         return ts
     except Exception as e:
@@ -115,6 +117,7 @@ def run(weights='./yolov5s.pt',  # weights path
         include=('torchscript', 'onnx', 'coreml'),  # include formats
         half=False,  # FP16 half-precision export
         inplace=False,  # set YOLOv5 Detect() inplace=True
+        output='./mobile_model/yolov5.ptl',
         train=False,  # model.train() mode
         optimize=False,  # TorchScript: optimize for mobile
         dynamic=False,  # ONNX: dynamic axes
@@ -158,7 +161,7 @@ def run(weights='./yolov5s.pt',  # weights path
 
     # Exports
     if 'torchscript' in include:
-        export_torchscript(model, img, file, optimize)
+        export_torchscript(model, img, output, optimize)
     if 'onnx' in include:
         export_onnx(model, img, file, opset, train, dynamic, simplify)
     if 'coreml' in include:
@@ -179,6 +182,7 @@ def parse_opt():
     parser.add_argument('--include', nargs='+', default=['torchscript', 'onnx', 'coreml'], help='include formats')
     parser.add_argument('--half', action='store_true', help='FP16 half-precision export')
     parser.add_argument('--inplace', action='store_true', help='set YOLOv5 Detect() inplace=True')
+    parser.add_argument('--output', type=str, default='./mobile_model/yolov5.ptl', help='Path and name of file export')
     parser.add_argument('--train', action='store_true', help='model.train() mode')
     parser.add_argument('--optimize', action='store_true', help='TorchScript: optimize for mobile')
     parser.add_argument('--dynamic', action='store_true', help='ONNX: dynamic axes')
