@@ -79,10 +79,11 @@ largest `--batch-size` your GPU allows (batch sizes shown for 16 GB devices).
 ```
 dossier_projet/
   -trained_model/
+  -mobile_model/
   -datasets/
         images/
         labels/
-  -yolov5
+  -yolov5/
 ```  
 
 ```bash
@@ -90,6 +91,20 @@ $ python ./yolov5/train.py --img 640 --batch 64 --epochs 10 --data ./yolov5/data
 ```
 
 <img width="800" src="https://user-images.githubusercontent.com/26833433/90222759-949d8800-ddc1-11ea-9fa1-1c97eed2b963.png">
+
+</details>  
+
+
+<details open>
+<summary>Export</summary>
+
+Les commandes sont pour exporter le modele vers une version mobile
+  
+```bash
+$ python ./yolov5/export.py --weights ./trained_model/yolov5s6_v1_1280.pt --img-size 1280 
+  --include torchscript --optimize --output ./mobile_model/yolov5s6_v1_1280.ptl
+```
+
 
 </details>  
 
