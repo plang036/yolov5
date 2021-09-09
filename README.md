@@ -1,5 +1,5 @@
 ## <div align="center">Dossier</div>
-
+```
 dossier_projet/ (nom peut changer)
   -trained_model/
   -mobile_model/
@@ -7,6 +7,7 @@ dossier_projet/ (nom peut changer)
         images/
         labels/
   -yolov5/ (ce git)
+```
   
 ## <div align="center">Documentation</div>
 
