@@ -1,9 +1,11 @@
 ## <div align="center">Dossier</div>
+[dataset](https://drive.google.com/drive/folders/1knSCfkZF0wJ9DpxewF2dj0G9960eFqxe?usp=sharing)
+[modeles](https://drive.google.com/drive/folders/1LudNLFy5TL8KTFPZ0W3F2CVhpfb6rQ-b?usp=sharing)
 ```
 dossier_projet/ (nom peut changer)
   -trained_model/
   -mobile_model/
-  -datasets/ [lien](https://drive.google.com/drive/folders/1knSCfkZF0wJ9DpxewF2dj0G9960eFqxe?usp=sharing)
+  -datasets/ 
         images/
         labels/
   -yolov5/ (ce git)
