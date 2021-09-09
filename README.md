@@ -1,3 +1,13 @@
+## <div align="center">Dossier</div>
+
+dossier_projet/ (nom peut changer)
+  -trained_model/
+  -mobile_model/
+  -datasets/ [lien](https://drive.google.com/drive/folders/1knSCfkZF0wJ9DpxewF2dj0G9960eFqxe?usp=sharing)
+        images/
+        labels/
+  -yolov5/ (ce git)
+  
 ## <div align="center">Documentation</div>
 
 See the [YOLOv5 Docs](https://docs.ultralytics.com) for full documentation on training, testing and deployment.
